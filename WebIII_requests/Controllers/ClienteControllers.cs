@@ -27,9 +27,9 @@ namespace WebIII_requests.Controllers
             var listateste = ListaDeClientes.listaDeClientes.Where(c => c.Cpf == cpf).ToList();
             if (listateste.Exists(c => c.Cpf == cpf))
             {
-                foreach (var aluno in ListaDeClientes.listaDeClientes)
+                foreach (var cliente in ListaDeClientes.listaDeClientes)
                 {
-                    aluno.Nome = nome;
+                    cliente.Nome = nome;
                 }
             }
             return ListaDeClientes.listaDeClientes;
@@ -38,7 +38,7 @@ namespace WebIII_requests.Controllers
         [HttpDelete]
         public List<Clientes> RemoverCliente(string cpf)
         {
-            ListaDeAlunos.listaDeAlunos.RemoveAll(c => c.Cpf == cpf);
+            ListaDeClientes.listaDeClientes.RemoveAll(c => c.Cpf == cpf);
             return ListaDeClientes.listaDeClientes;
         }
     }
