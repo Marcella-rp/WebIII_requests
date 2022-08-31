@@ -19,11 +19,12 @@ namespace WebIII_requests.Controllers
 
         [HttpPost("/ Cliente/cadastrar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-       
+        [ProducesResponseType(StatusCodes.Status201Created)]
+
         public ActionResult<Clientes> AdicionarCliente(Clientes NovoCliente)
         {
             ListaDeClientes.listaDeClientes.Add(NovoCliente);
-            return Ok(NovoCliente);
+            return CreatedAtAction(nameof(AdicionarCliente), NovoCliente); ;
         }
 
         [HttpPut("/ Cliente/atualizar")]
