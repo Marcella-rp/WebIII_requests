@@ -5,41 +5,61 @@ namespace WebIII_requests.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Consumes("application/json")]
+    [Produces("application/json")]
     public class ClientesController : ControllerBase
     {
 
-        [HttpGet]
-        public List<Clientes> GetCliente()
+        [HttpGet("/ Cliente/consultar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public ActionResult<List<Clientes>> GetCliente()
         {
-            return ListaDeClientes.listaDeClientes;
+            return Ok (ListaDeClientes.listaDeClientes);
         }
 
-        [HttpPost]
-        public Clientes AdicionarCliente(Clientes NovoCliente)
+        [HttpPost("/ Cliente/cadastrar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        public ActionResult<Clientes> AdicionarCliente(Clientes NovoCliente)
         {
             ListaDeClientes.listaDeClientes.Add(NovoCliente);
-            return NovoCliente;
+            return Ok(NovoCliente);
         }
 
-        [HttpPut]
-        public List<Clientes> AlterarCliente(string cpf, string nome)
+        [HttpPut("/ Cliente/atualizar")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public ActionResult<List<Clientes>> AlterarCliente(string cpf, string nome)
         {
             var listateste = ListaDeClientes.listaDeClientes.Where(c => c.Cpf == cpf).ToList();
-            if (listateste.Exists(c => c.Cpf == cpf))
+            if (!(listateste.Exists(c => c.Cpf == cpf)))
+            {
+                return NotFound();
+            }
+            else
             {
                 foreach (var cliente in ListaDeClientes.listaDeClientes)
                 {
                     cliente.Nome = nome;
                 }
             }
-            return ListaDeClientes.listaDeClientes;
+            return Ok (ListaDeClientes.listaDeClientes);
         }
 
-        [HttpDelete]
-        public List<Clientes> RemoverCliente(string cpf)
+        [HttpDelete("/ Cliente/deletar")]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        
+        public ActionResult<List<Clientes>> RemoverCliente(string cpf)
         {
-            ListaDeClientes.listaDeClientes.RemoveAll(c => c.Cpf == cpf);
+            var query = ListaDeClientes.listaDeClientes.Where(c => c.Cpf == cpf).ToList();
             return ListaDeClientes.listaDeClientes;
+            if(!(query.Exists(c => c.Cpf == cpf)))
+            {
+                return NotFound();
+            }
+            ListaDeClientes.listaDeClientes.RemoveAll(c => c.Cpf == cpf);
+            return NoContent();
         }
     }
 }

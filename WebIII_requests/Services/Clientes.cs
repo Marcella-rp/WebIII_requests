@@ -1,9 +1,15 @@
-﻿namespace WebIII_requests.Services
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace WebIII_requests.Services
 {
     public class Clientes
     {
+        [Required(ErrorMessage = "CPF é obrigatório")]
+        [MaxLength(11, ErrorMessage = "CPF deve conter até 11 caracteres")]
         public string Cpf { get; set; }
+        [Required(ErrorMessage = "Nome é obrigatório")]
         public string Nome { get; set; }
+        [Required(ErrorMessage = "Data de nascimento é obrigatória")]
         public DateTime DataNascimento { get; set; }
         public int Idade { get; set; }
 
