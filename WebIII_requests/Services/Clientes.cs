@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace WebIII_requests.Services
 {
@@ -13,23 +14,14 @@ namespace WebIII_requests.Services
         public string Nome { get; set; }
         [Required(ErrorMessage = "Data de nascimento é obrigatória")]
         public DateTime DataNascimento { get; set; }
-        public int Idade { get; set; }
+        [Range (18, int.MaxValue, ErrorMessage = "Cliente precisa ser maior que 18 anos")]
+        public int Idade => ObterIdade();
 
-        public Clientes(long id,string cpf, string nome, DateTime datanascimento)
-        {
-            Id = id;
-            Cpf = cpf;
-            Nome = nome;
-            DataNascimento = datanascimento;
-        }
-
+        
         public int ObterIdade()
         {
-            int idade = DateTime.Now.Year - DataNascimento.Year;
-            if (DateTime.Now.DayOfYear < DataNascimento.DayOfYear)
-            {
-                idade--;
-            }
+            int idade = (int)(DateTime.Today - DataNascimento).TotalDays;
+            idade = idade / 365;
             return idade;
         }
 

@@ -42,8 +42,8 @@ namespace WebIII_requests.Repository
 
         public bool UpdateCliente(long id, Clientes cliente)
         {
-            var query = @"UPDATE clientes set nome = @nome,
-                        datadenascimento = @datadenascimento, idade = @idade
+            var query = @"UPDATE clientes set cpf = @cpf, nome = @nome,
+                        dataNascimento = @dataNascimento 
                         WHERE id = @id";
 
             cliente.Id = id;

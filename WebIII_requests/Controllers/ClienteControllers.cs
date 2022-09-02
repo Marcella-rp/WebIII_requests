@@ -14,15 +14,15 @@ namespace WebIII_requests.Controllers
 
         public ClientesController(IConfiguration configuration)
         {
-            
-            var repositoryCliente = new ClienteRepository(configuration);
+            _repositoryCliente = new ClienteRepository(configuration);
         }
 
         [HttpGet("/ Cliente/consultar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<Clientes>> GetCliente()
         {
-            return Ok(_repositoryCliente.GetCliente());
+            var clientes = _repositoryCliente.GetCliente();
+            return Ok(clientes);
         }
 
         [HttpPost("/ Cliente/cadastrar")]
