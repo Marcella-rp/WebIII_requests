@@ -15,7 +15,7 @@ namespace WebIII_requests.Controllers
         public ClientesController(IConfiguration configuration)
         {
             
-            var repositoryProduto = new ClienteRepository(configuration);
+            var repositoryCliente = new ClienteRepository(configuration);
         }
 
         [HttpGet("/ Cliente/consultar")]
@@ -40,23 +40,23 @@ namespace WebIII_requests.Controllers
 
         [HttpPut("/ Cliente/atualizar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public IActionResult AlterarCliente(string cpf, Clientes cliente )
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public IActionResult AlterarCliente(long id, Clientes cliente )
         {
-            if (!_repositoryCliente.UpdateCliente(cpf, cliente))
+            if (!_repositoryCliente.UpdateCliente(id, cliente))
             {
-                return BadRequest();
+                return NotFound();
             }
-            return Ok (_repositoryCliente.UpdateCliente(cpf, cliente));
+            return Ok (_repositoryCliente.UpdateCliente(id, cliente));
         }
 
         [HttpDelete("/ Cliente/deletar")]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         
-        public ActionResult<List<Clientes>> RemoverCliente(string cpf)
+        public ActionResult<List<Clientes>> RemoverCliente(long id)
         {
-            if (!_repositoryCliente.DeleteCliente(cpf))
+            if (!_repositoryCliente.DeleteCliente(id))
             {
                 return NotFound();
             }

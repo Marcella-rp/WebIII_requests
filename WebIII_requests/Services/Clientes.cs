@@ -4,6 +4,8 @@ namespace WebIII_requests.Services
 {
     public class Clientes
     {
+        public long Id { get; set; }
+
         [Required(ErrorMessage = "CPF é obrigatório")]
         [MaxLength(11, ErrorMessage = "CPF deve conter até 11 caracteres")]
         public string Cpf { get; set; }
@@ -13,8 +15,9 @@ namespace WebIII_requests.Services
         public DateTime DataNascimento { get; set; }
         public int Idade { get; set; }
 
-        public Clientes(string cpf, string nome, DateTime datanascimento)
+        public Clientes(long id,string cpf, string nome, DateTime datanascimento)
         {
+            Id = id;
             Cpf = cpf;
             Nome = nome;
             DataNascimento = datanascimento;

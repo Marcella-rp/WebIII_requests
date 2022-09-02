@@ -40,13 +40,13 @@ namespace WebIII_requests.Repository
             return conn.Execute(query, parameters) == 1;
         }
 
-        public bool UpdateCliente(string cpf, Clientes cliente)
+        public bool UpdateCliente(long id, Clientes cliente)
         {
             var query = @"UPDATE clientes set nome = @nome,
                         datadenascimento = @datadenascimento, idade = @idade
-                        WHERE cpf = @cpf";
+                        WHERE id = @id";
 
-            cliente.Cpf = cpf;
+            cliente.Id = id;
 
             var parameters = new DynamicParameters(cliente);
 
@@ -55,12 +55,12 @@ namespace WebIII_requests.Repository
             return conn.Execute(query, parameters) == 1;
         }
 
-        public bool DeleteCliente(string cpf)
+        public bool DeleteCliente(long id)
         {
-            var query = "DELETE FROM clientes WHERE cpf = @cpf";
+            var query = "DELETE FROM clientes WHERE id = @id";
 
             var parameters = new DynamicParameters();
-            parameters.Add("cpf", cpf);
+            parameters.Add("id", id);
 
             using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
 
