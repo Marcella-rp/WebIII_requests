@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using WebIII_requests.Repository;
 using WebIII_requests.Services;
 
 namespace WebIII_requests.Controllers
@@ -9,42 +10,44 @@ namespace WebIII_requests.Controllers
     [Produces("application/json")]
     public class ClientesController : ControllerBase
     {
+        public ClienteRepository _repositoryCliente;
+
+        public ClientesController(IConfiguration configuration)
+        {
+            
+            var repositoryProduto = new ClienteRepository(configuration);
+        }
 
         [HttpGet("/ Cliente/consultar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public ActionResult<List<Clientes>> GetCliente()
         {
-            return Ok (ListaDeClientes.listaDeClientes);
+            return Ok(_repositoryCliente.GetCliente());
         }
 
         [HttpPost("/ Cliente/cadastrar")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status201Created)]
-
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Clientes> AdicionarCliente(Clientes NovoCliente)
         {
-            ListaDeClientes.listaDeClientes.Add(NovoCliente);
+           if (!_repositoryCliente.InsertCliente(NovoCliente))
+            {
+                return BadRequest();
+            }
+
             return CreatedAtAction(nameof(AdicionarCliente), NovoCliente); ;
         }
 
         [HttpPut("/ Cliente/atualizar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public ActionResult<List<Clientes>> AlterarCliente(string cpf, string nome)
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public IActionResult AlterarCliente(string cpf, Clientes cliente )
         {
-            var listateste = ListaDeClientes.listaDeClientes.Where(c => c.Cpf == cpf).ToList();
-            if (!(listateste.Exists(c => c.Cpf == cpf)))
+            if (!_repositoryCliente.UpdateCliente(cpf, cliente))
             {
-                return NotFound();
+                return BadRequest();
             }
-            else
-            {
-                foreach (var cliente in ListaDeClientes.listaDeClientes)
-                {
-                    cliente.Nome = nome;
-                }
-            }
-            return Ok (ListaDeClientes.listaDeClientes);
+            return Ok (_repositoryCliente.UpdateCliente(cpf, cliente));
         }
 
         [HttpDelete("/ Cliente/deletar")]
@@ -53,13 +56,10 @@ namespace WebIII_requests.Controllers
         
         public ActionResult<List<Clientes>> RemoverCliente(string cpf)
         {
-            var query = ListaDeClientes.listaDeClientes.Where(c => c.Cpf == cpf).ToList();
-            return ListaDeClientes.listaDeClientes;
-            if(!(query.Exists(c => c.Cpf == cpf)))
+            if (!_repositoryCliente.DeleteCliente(cpf))
             {
                 return NotFound();
             }
-            ListaDeClientes.listaDeClientes.RemoveAll(c => c.Cpf == cpf);
             return NoContent();
         }
     }
