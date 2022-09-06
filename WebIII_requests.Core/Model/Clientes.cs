@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using static System.Net.Mime.MediaTypeNames;
 
-namespace WebIII_requests.Services
+
+namespace WebIII_requests.Core.Model
 {
     public class Clientes
     {

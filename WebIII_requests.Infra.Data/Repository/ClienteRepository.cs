@@ -1,10 +1,12 @@
 ﻿using Dapper;
 using Microsoft.Data.SqlClient;
-using WebIII_requests.Services;
+using Microsoft.Extensions.Configuration;
+using WebIII_requests.Core.Interface;
+using WebIII_requests.Core.Model;
 
-namespace WebIII_requests.Repository
+namespace WebIII_requests.Infra.Data.Repository
 {
-    public class ClienteRepository
+    public class ClienteRepository : IClienteRepository 
     {
 
         private readonly IConfiguration _configuration;
@@ -14,7 +16,7 @@ namespace WebIII_requests.Repository
             _configuration = configuration;
         }
 
-        public List<Clientes> GetCliente()
+        public List<Clientes> ConsultarClientes()
         {
             var query = "SELECT * FROM Clientes";
 
@@ -23,7 +25,7 @@ namespace WebIII_requests.Repository
             return conn.Query<Clientes>(query).ToList(); 
         }
 
-        public bool InsertCliente(Clientes cliente)
+        public bool InserirCliente(Clientes cliente)
         {
             var query = $"INSERT INTO clientes VALUES(@cpf,@nome,@datanascimento,@idade)";
 
@@ -40,7 +42,7 @@ namespace WebIII_requests.Repository
             return conn.Execute(query, parameters) == 1;
         }
 
-        public bool UpdateCliente(long id, Clientes cliente)
+        public bool AtualizarCliente(long id, Clientes cliente)
         {
             var query = @"UPDATE clientes set cpf = @cpf, nome = @nome,
                         dataNascimento = @dataNascimento 
@@ -55,7 +57,7 @@ namespace WebIII_requests.Repository
             return conn.Execute(query, parameters) == 1;
         }
 
-        public bool DeleteCliente(long id)
+        public bool DeletarCliente(long id)
         {
             var query = "DELETE FROM clientes WHERE id = @id";
 

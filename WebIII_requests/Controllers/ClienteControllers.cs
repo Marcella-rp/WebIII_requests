@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using WebIII_requests.Repository;
-using WebIII_requests.Services;
+using WebIII_requests.Core.Interface;
+using WebIII_requests.Core.Model;
 
 namespace WebIII_requests.Controllers
 {
@@ -10,19 +10,18 @@ namespace WebIII_requests.Controllers
     [Produces("application/json")]
     public class ClientesController : ControllerBase
     {
-        public ClienteRepository _repositoryCliente;
+        public IClienteService _clienteService;
 
-        public ClientesController(IConfiguration configuration)
+        public ClientesController(IClienteService clienteService)
         {
-            _repositoryCliente = new ClienteRepository(configuration);
+            _clienteService = clienteService;
         }
 
         [HttpGet("/ Cliente/consultar")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public ActionResult<List<Clientes>> GetCliente()
+        public ActionResult<List<Clientes>> ConsultarClientes()
         {
-            var clientes = _repositoryCliente.GetCliente();
-            return Ok(clientes);
+            return Ok(_clienteService.ConsultarClientes());
         }
 
         [HttpPost("/ Cliente/cadastrar")]
@@ -30,7 +29,7 @@ namespace WebIII_requests.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public ActionResult<Clientes> AdicionarCliente(Clientes NovoCliente)
         {
-           if (!_repositoryCliente.InsertCliente(NovoCliente))
+           if (!_clienteService.InserirCliente(NovoCliente))
             {
                 return BadRequest();
             }
@@ -43,11 +42,11 @@ namespace WebIII_requests.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public IActionResult AlterarCliente(long id, Clientes cliente )
         {
-            if (!_repositoryCliente.UpdateCliente(id, cliente))
+            if (!_clienteService.AtualizarCliente(id, cliente))
             {
                 return NotFound();
             }
-            return Ok (_repositoryCliente.UpdateCliente(id, cliente));
+            return Ok (_clienteService.AtualizarCliente(id, cliente));
         }
 
         [HttpDelete("/ Cliente/deletar")]
@@ -56,7 +55,7 @@ namespace WebIII_requests.Controllers
         
         public ActionResult<List<Clientes>> RemoverCliente(long id)
         {
-            if (!_repositoryCliente.DeleteCliente(id))
+            if (!_clienteService.DeletarCliente(id))
             {
                 return NotFound();
             }
