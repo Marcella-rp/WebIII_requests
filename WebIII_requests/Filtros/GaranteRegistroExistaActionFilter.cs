@@ -13,7 +13,7 @@ namespace WebIII_requests.Filtros
             _clienteService = clienteService;
         }
 
-        public void OnActionExecuting(ActionExecutingContext context)
+        public override void OnActionExecuting(ActionExecutingContext context)
         {
             long id = (long)context.ActionArguments["id"];
 

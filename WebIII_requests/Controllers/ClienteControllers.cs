@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using WebIII_requests.Core.Interface;
 using WebIII_requests.Core.Model;
 using WebIII_requests.Filtros;
@@ -32,7 +33,7 @@ namespace WebIII_requests.Controllers
    
         public ActionResult<Clientes> ConsultarClientePorCpf(string cpf)
         {
-            if(_clienteService.ConsultarClientePorCpf(cpf) == null)
+            if (_clienteService.ConsultarClientePorCpf(cpf) == null)
             {
                 return NotFound();
             }
