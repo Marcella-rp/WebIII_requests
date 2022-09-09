@@ -12,11 +12,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-/*builder.Services.AddMvc(options =>
+builder.Services.AddMvc(options =>
 {
-    options.Filters.Add< >();
+    options.Filters.Add<GeneralExceptionFilter>();
 }
-);*/
+);
 
 builder.Services.AddScoped<IClienteService, ClienteService>();
 builder.Services.AddScoped<IClienteRepository, ClienteRepository>();
