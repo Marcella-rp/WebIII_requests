@@ -26,5 +26,13 @@ namespace WebIII_requests.Core.Service //aqui tudo que é cerne do sistema.Onde 
         {
             return _clienteRepository.DeletarCliente(id);
         }
+        public Clientes ConsultarClientePorCpf(string cpf)
+        {
+            return _clienteRepository.ConsultarClientePorCpf(cpf);
+        }
+        public Clientes ConsultarClientePorId(long id)
+        {
+            return _clienteRepository.ConsultarClientePorId(id);
+        }
     }
 }
