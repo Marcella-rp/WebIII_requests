@@ -70,5 +70,30 @@ namespace WebIII_requests.Infra.Data.Repository
 
         }
 
+        public Clientes ConsultarClientePorCpf(string cpf)
+        {
+            var query = "SELECT * FROM Clientes WHERE cpf=@cpf";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("cpf",cpf);
+
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+            return conn.QueryFirstOrDefault<Clientes>(query,parameters);
+
+        }
+
+        public Clientes ConsultarClientePorId(long id)
+        {
+            var query = "SELECT * FROM Clientes WHERE id=@id";
+
+            var parameters = new DynamicParameters();
+            parameters.Add("id", id);
+
+            using var conn = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+
+            return conn.QueryFirstOrDefault<Clientes>(query, parameters);
+
+        }
     }
 }

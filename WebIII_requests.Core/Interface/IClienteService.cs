@@ -8,5 +8,7 @@ namespace WebIII_requests.Core.Interface
         bool InserirCliente(Clientes cliente);
         bool AtualizarCliente(long id, Clientes cliente);
         bool DeletarCliente(long id);
+        Clientes ConsultarClientePorCpf(string cpf);
+        Clientes ConsultarClientePorId(long id);
     }
 }
